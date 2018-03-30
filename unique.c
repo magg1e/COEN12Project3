@@ -27,24 +27,6 @@
 
 
 /*
- * Function:    strhash
- *
- * Description: Return a hash value for a string S.
- */
-
-static unsigned strhash(char *s)
-{
-    unsigned hash = 0;
-
-
-    while (*s != '\0')
-        hash = 31 * hash + *s ++;
-
-    return hash;
-}
-
-
-/*
  * Function:    main
  *
  * Description: Driver function for the test application.
@@ -53,7 +35,7 @@ static unsigned strhash(char *s)
 int main(int argc, char *argv[])
 {
     FILE *fp;
-    char buffer[BUFSIZ], **elts, *word;
+    char buffer[BUFSIZ], **elts;
     SET *unique;
     int i, words;
     bool lflag = false;
@@ -83,12 +65,11 @@ int main(int argc, char *argv[])
     /* Insert all words into the set. */
 
     words = 0;
-    unique = createSet(MAX_SIZE, strcmp, strhash);
+    unique = createSet(MAX_SIZE);
 
     while (fscanf(fp, "%s", buffer) == 1) {
         words ++;
-	if (!findElement(unique, buffer))
-	    addElement(unique, strdup(buffer));
+        addElement(unique, buffer);
     }
 
     fclose(fp);
@@ -110,12 +91,8 @@ int main(int argc, char *argv[])
 
         /* Delete all words in the second file. */
 
-        while (fscanf(fp, "%s", buffer) == 1) {
-	    if ((word = findElement(unique, buffer)) != NULL) {
-		removeElement(unique, buffer);
-		free(word);
-	    }
-	}
+        while (fscanf(fp, "%s", buffer) == 1)
+            removeElement(unique, buffer);
 
 	fclose(fp);
 

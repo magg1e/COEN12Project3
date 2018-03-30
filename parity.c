@@ -24,24 +24,6 @@
 
 
 /*
- * Function:    strhash
- *
- * Description: Return a hash value for a string S.
- */
-
-static unsigned strhash(char *s)
-{
-    unsigned hash = 0;
-
-
-    while (*s != '\0')
-        hash = 31 * hash + *s ++;
-
-    return hash;
-}
-
-
-/*
  * Function:    main
  *
  * Description: Driver function for the test application.
@@ -50,7 +32,7 @@ static unsigned strhash(char *s)
 int main(int argc, char *argv[])
 {
     FILE *fp;
-    char buffer[BUFSIZ], *word;
+    char buffer[BUFSIZ];
     SET *odd;
     int words;
 
@@ -71,16 +53,15 @@ int main(int argc, char *argv[])
     /* Insert or delete words to compute their parity. */
 
     words = 0;
-    odd = createSet(MAX_SIZE, strcmp, strhash);
+    odd = createSet(MAX_SIZE);
 
     while (fscanf(fp, "%s", buffer) == 1) {
         words ++;
 
-        if ((word = findElement(odd, buffer)) != NULL) {
+        if (findElement(odd, buffer))
             removeElement(odd, buffer);
-	    free(word);
-	} else
-            addElement(odd, strdup(buffer));
+        else
+            addElement(odd, buffer);
     }
 
     printf("%d total words\n", words);

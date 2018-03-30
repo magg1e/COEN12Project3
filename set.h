@@ -4,9 +4,8 @@
  * Copyright:	2017, Darren C. Atkinson
  *
  * Description: This file contains the public function and type
- *              declarations for a set abstract data type for generic
- *              pointer types.  A set is an unordered collection of
- *              distinct elements.
+ *              declarations for a set abstract data type for strings.  A
+ *              set is an unordered collection of distinct elements.
  */
 
 # ifndef SET_H
@@ -14,18 +13,18 @@
 
 typedef struct set SET;
 
-SET *createSet(int maxElts, int (*compare)(), unsigned (*hash)());
+SET *createSet(int maxElts);
 
 void destroySet(SET *sp);
 
 int numElements(SET *sp);
 
-void addElement(SET *sp, void *elt);
+void addElement(SET *sp, char *elt);
 
-void removeElement(SET *sp, void *elt);
+void removeElement(SET *sp, char *elt);
 
-void *findElement(SET *sp, void *elt);
+char *findElement(SET *sp, char *elt);
 
-void *getElements(SET *sp);
+char **getElements(SET *sp);
 
 # endif /* SET_H */
